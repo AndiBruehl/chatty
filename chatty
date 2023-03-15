@@ -1,90 +1,111 @@
 #!/bin/bash
 
+log=chatty-$(date -I).log
+
+if [ -n $1 ]
+then
+    cname="$1"
+else
+    cname="Chatty"
+fi
+
+cecho() {
+    echo "$1"
+    echo "Chatty: $1" >> $log
+}
+
+cread() {
+    read tmp
+    echo "${NAME:-${tmp}}: ${tmp}" >> $log
+    echo "$tmp"
+}
+
 let x=20
 let y=50
 
-echo   " Hallo, ich bin Chatty. Wie heißt du?"
-read NAME
-echo   " Hallo $NAME, freut mich. Und wie alt bist du?"
-read AGE
+cecho " Hallo, ich bin Chatty. Wie heißt du?"
+NAME=$(cread)
+
+cecho " Hallo $NAME, freut mich. Und wie alt bist du?"
+AGE=$(cread)
 
 if [ $AGE -le $x ]; then
-echo   " Du bist unter 20 Jahren alt."
+cecho   " Du bist unter 20 Jahren alt."
 elif [ $AGE -ge $y ]; then
-echo   " Du bist über 50 Jahre alt!"
+cecho   " Du bist über 50 Jahre alt!"
 else
-echo   " Du bist zwischen 20 und 50 Jahren alt."
+cecho   " Du bist zwischen 20 und 50 Jahren alt."
 
 fi
 
-echo   " Und wo wohnst du?"
-read city
-echo   " $city ist ein schöner Ort!"
+cecho   " Und wo wohnst du?"
+city=$(cread)
+cecho   " $city ist ein schöner Ort!"
 
-echo   " Welche Filme magst du so?"
-read movie
+cecho   " Welche Filme magst du so?"
+movie=$(cread)
 if [ $movie = Liebesfilme ]; then
-echo   " Ab und an muss es mal Romantik sein."
+cecho   " Ab und an muss es mal Romantik sein."
 elif [ $movie = Actionfilme ]; then
-echo   " Nur fette Explosionen sind das einzig wahre!"
+cecho   " Nur fette Explosionen sind das einzig wahre!"
 elif [ $movie = Marvelfilme ]; then
-echo   " Die sind ja auch besser als das DCEU!"
+cecho   " Die sind ja auch besser als das DCEU!"
 elif [ $movie = Disneyfilme ]; then
-echo   " Manchmal muss das Kind in einem auch mal raus!"
+cecho   " Manchmal muss das Kind in einem auch mal raus!"
 else
-echo   " Solange du dich gut unterhalten fühlst bin ich zufrieden."
+cecho   " Solange du dich gut unterhalten fühlst bin ich zufrieden."
 
 fi
 
-echo   " Darf ich dich noch weitere Dinge fragen oder möchtest du beenden? Ja für Beenden, Nein für weitere Fragen."
-read answer
+cecho   " Darf ich dich noch weitere Dinge fragen oder möchtest du beenden? Ja für Beenden, Nein für weitere Fragen."
+answer=$(cread)
 if [ $answer = Ja ]; then
-echo   " Das ist schade. Mach es gut $NAME, und hab noch n tollen Tag!"
+cecho   " Das ist schade. Mach es gut $NAME, und hab noch n tollen Tag!"
 exit 1
 
 fi
 
-echo   " Es freut mich, dass ich noch weitere Zeit mit dir verbringen darf."
-echo   " Spielst du gerne Computerspiele? (Ja/Nein)"
-read game
+cecho   " Es freut mich, dass ich noch weitere Zeit mit dir verbringen darf."
+cecho   " Spielst du gerne Computerspiele? (Ja/Nein)"
+game=$(cread)
 if [ $game = Ja ]; then
-echo   " Und was ist dein Lieblingsspiel?"
-read game1
-echo   " $game1? Das klingt interessant, das schaue ich mir mal näher an."
+cecho   " Und was ist dein Lieblingsspiel?"
+game1=$(cread)
+cecho   " $game1? Das klingt interessant, das schaue ich mir mal näher an."
 else 
-echo   " Das ist schade, aber nicht weiter schlimm."
+cecho   " Das ist schade, aber nicht weiter schlimm."
 
 fi
 
-echo   " Und welche Jahreszeit magst du am liebsten?"
-read season
-echo   " Den $season? Interessant. Ich mag den Frühling am liebsten, da ist es weder zu warm noch zu kalt und die Natur erwacht zu neuem Leben."
+cecho   " Und welche Jahreszeit magst du am liebsten?"
+season=$(cread)
+cecho   " Den $season? Interessant. Ich mag den Frühling am liebsten, da ist es weder zu warm noch zu kalt und die Natur erwacht zu neuem Leben."
 
-echo   " Was ist deine Lieblingsfarbe?"
-read color1
-echo   " Das ist schön. Möchtest du meine Lieblingsfarbe wissen? (Ja/Nein)"
-read decision
+cecho   " Was ist deine Lieblingsfarbe?"
+color1=$(cread)
+cecho   " Das ist schön. Möchtest du meine Lieblingsfarbe wissen? (Ja/Nein)"
+decision=$(cread)
 if [ $decision = Ja ]; then
-echo   " Meine Lieblingsfarbe ist grün."
+cecho   " Meine Lieblingsfarbe ist grün."
 else 
-echo   " Das ist auch okay."
+cecho   " Das ist auch okay."
 fi
 
 if [ $decision = Ja -a $color1 = Grün ]; then
-echo   " Du hast die selbe Lieblingsfarbe wie ich, das ist sehr sympathisch! :) "
+cecho   " Du hast die selbe Lieblingsfarbe wie ich, das ist sehr sympathisch! :) "
 fi
 
-echo " Geht es dir gerade gut? (Gut/Schlecht)"
-read Gefuehl
+cecho " Geht es dir gerade gut? (Gut/Schlecht)"
+Gefuehl=$(cread)
 if [ $Gefuehl = Gut ]; then
-echo "Das freut mich zu lesen!"
+cecho "Das freut mich zu lesen!"
 else
-echo " Das tut mir leid, ruh dich aus und erhole dich!"
+cecho " Das tut mir leid, ruh dich aus und erhole dich!"
 fi
-echo ""
-echo " Danke für das schöne Gespräch, hier sind nochmal alle Antworten von dir:"
-echo ""
-echo " Dein Name ist $NAME.
+cecho ""
+cecho " Danke für das schöne Gespräch, hier sind nochmal alle Antworten von dir:"
+cecho ""
+cecho " Dein Name ist $NAME.
  Du bist $AGE Jahre alt.
  Du wohnst in $city.
  Deine Lieblingsfilme sind $movie.
